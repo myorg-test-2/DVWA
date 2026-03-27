@@ -1,2 +1,3 @@
 # PR gate test trigger
 # trigger re-scan after policy fix
+# re-trigger after branch policy save
