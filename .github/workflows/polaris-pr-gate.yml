@@ -1,6 +1,8 @@
 name: Polaris PR Gate
 
 on:
+  push:
+    branches: [master]
   pull_request:
     branches: [master]
 
@@ -13,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Polaris Scan
+      - name: Black Duck Security Scan
         uses: blackduck-inc/black-duck-security-scan@v2
         with:
           polaris_server_url: ${{ vars.POLARIS_URL }}
@@ -21,6 +23,7 @@ jobs:
           polaris_application_name: 'allenl_applications'
           polaris_project_name: 'pr-gate-test'
           polaris_assessment_types: 'SAST'
+          polaris_prComment_enabled: true
+          polaris_prComment_severities: 'CRITICAL,HIGH,MEDIUM'
+          mark_build_status: 'failure'
           github_token: ${{ secrets.GITHUB_TOKEN }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
