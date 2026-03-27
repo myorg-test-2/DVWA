@@ -1,0 +1,27 @@
+name: CI Detection Status Test
+
+on:
+  push:
+    branches: [ci-detection-test]
+
+permissions:
+  contents: read
+
+jobs:
+  polaris-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Black Duck Security Scan
+        uses: blackduck-inc/black-duck-security-scan@v2
+        with:
+          polaris_server_url: ${{ vars.POLARIS_URL }}
+          polaris_access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
+          polaris_application_name: 'allenl_applications'
+          polaris_project_name: 'ci-detection-status-test'
+          polaris_branch_name: 'ci-detection-test'
+          polaris_assessment_types: 'SAST'
+          polaris_test_sast_type: 'SAST-FULL'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
